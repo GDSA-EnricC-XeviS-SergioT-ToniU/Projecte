@@ -1,7 +1,6 @@
-%Prova nou projecte
+%% PODEU VEURE QUE AQUÍ ES POT ANAR POSANT TOT EL CODI
 
-x = 10;
+x=2;
+b=3;
 
-a = 5;
-
-b = x*a;
+z = x + b;
