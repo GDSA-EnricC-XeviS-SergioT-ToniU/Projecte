@@ -1,0 +1,36 @@
+@c This is part of the SocialDetector Software.
+@c Copyright (C) 2013 Antonio Jesús Urbano Torres
+@c Free Software Foundation, Inc.
+@c See the file README for copying conditions.
+
+
+
+Instrucciones de uso
+
+Primero abrimos el fichero EntrenamentMain.m con Matlab,
+y esto genera la base de datos y los tTags, que son los 
+tags por categoría.
+
+Después abrimos el ClassificarFotosMain.m y este programa
+lo que hace es preguntarte donde tienes la carpeta de los
+archivos de entrada y introduce en un fichero de texto la 
+clasificación.
+
+Además, también nos proporciona la información del archivo
+de texto en una variable tipo struct. Al abrir el archivo
+ClassificarFotosMain.m el classificador se pone en marcha 
+y clasifica las imágenes en los nueve tipos diferentes
+de eventos.
+
+Por lo que respecta a la parte de la evaluación, abrimos
+el script evaluacion.m y al ejecutar el programa nos 
+pide que le digamos donde se encuentra el fichero de 
+verdad terreno, que debe estar en .csv, con comas y 
+con una línea de cabecera. 
+
+Luego importamos también el archivo del clasificador, donde
+en ese caso no hay línea de cabecera y el delimitador es un 
+espacio.Esto automáticamente te genera dos bases de datos: 
+una para el clasificador y otra para la verdad terreno y ya 
+podemos visualizar la interfaz de salida donde aparecen los
+resultados del clasificador. 
