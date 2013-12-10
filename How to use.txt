@@ -1,5 +1,5 @@
 @c This is part of the SocialDetector Software.
-@c Copyright (C) 2013 Antonio Jesús Urbano Torres
+@c Copyright (C) 2013 Antonio Jesï¿½s Urbano Torres
 @c Free Software Foundation, Inc.
 @c See the file README for copying conditions.
 
@@ -9,28 +9,29 @@ Instrucciones de uso
 
 Primero abrimos el fichero EntrenamentMain.m con Matlab,
 y esto genera la base de datos y los tTags, que son los 
-tags por categoría.
+tags por categorï¿½a.
 
-Después abrimos el ClassificarFotosMain.m y este programa
+Despuï¿½s abrimos el ClassificarFotosMain.m y este programa
 lo que hace es preguntarte donde tienes la carpeta de los
 archivos de entrada y introduce en un fichero de texto la 
-clasificación.
+clasificaciï¿½n.
 
-Además, también nos proporciona la información del archivo
+Ademï¿½s, tambiï¿½n nos proporciona la informaciï¿½n del archivo
 de texto en una variable tipo struct. Al abrir el archivo
 ClassificarFotosMain.m el classificador se pone en marcha 
-y clasifica las imágenes en los nueve tipos diferentes
+y clasifica las imï¿½genes en los nueve tipos diferentes
 de eventos.
 
-Por lo que respecta a la parte de la evaluación, abrimos
+Por lo que respecta a la parte de la evaluaciï¿½n, abrimos
 el script evaluacion.m y al ejecutar el programa nos 
 pide que le digamos donde se encuentra el fichero de 
 verdad terreno, que debe estar en .csv, con comas y 
-con una línea de cabecera. 
+con una lï¿½nea de cabecera. 
 
-Luego importamos también el archivo del clasificador, donde
-en ese caso no hay línea de cabecera y el delimitador es un 
-espacio.Esto automáticamente te genera dos bases de datos: 
+Luego importamos tambiï¿½n el archivo del clasificador, donde
+en ese caso no hay lï¿½nea de cabecera y el delimitador es un 
+espacio.Esto automï¿½ticamente te genera dos bases de datos: 
 una para el clasificador y otra para la verdad terreno y ya 
-podemos visualizar la interfaz de salida donde aparecen los
-resultados del clasificador. 
+podemos visualizar la interfaz de salida abriendo el fichero
+mesures.fig con el botÃ³n derecho y open GUI, actualizando
+manualmente las tablas que hay definidas.
