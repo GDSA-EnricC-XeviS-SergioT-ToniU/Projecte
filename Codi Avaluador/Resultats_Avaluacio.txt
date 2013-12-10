@@ -1,0 +1,37 @@
+MATRIU DE CONFUSIÓ
+
+                                                                     Predicció
+                                concert conference exhibition fashion non_event other protest sports theater_dance
+                  concert        88        0        2        0        137        2        1        0        0        
+                  conference        5        0        1        1        4        1        0        0        0        
+                  exhibition        5        0        5        0        18        0        0        0        0        
+                  fashion        2        0        0        0        2        0        0        0        0        
+Veritat Terreny   non_event        661        10        55        0        1498        3        10        0        0        
+                  other        5        0        0        0        14        0        0        0        0        
+                  protest        1        0        0        0        6        0        2        0        0        
+                  sports        3        0        0        0        13        0        0        0        0        
+                  theater_dance  8        0        0        0        14        0        0        0        0        
+
+
+
+MESURES AVALUACIÓ:
+
+                   Precisió           Record           F-Score 
+concert				0.11311				0.38261				0.1746
+conference				0				0				0
+exhibition				0.079365				0.17857				0.10989
+fashion				0				0				0
+non_event				0.87808				0.66965				0.75983
+other				0				0				0
+protest				0.15385				0.22222				0.18182
+sports				0				0				0
+theater_dance				0				0				0
+
+
+AVG Precisió: 0.3061
+AVG Record: 0.36326
+AVG F-Score: 0.30653
+
+Encerts: 1593 (61.8161)
+Erronis: 984 (38.1839)
+Totals: 2577

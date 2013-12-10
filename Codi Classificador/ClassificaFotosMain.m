@@ -6,16 +6,18 @@
 
 fotosClassificar = agafaFotos();
 
-% Encerts=0;
+%  Encerts=0;
 fid=fopen('dadesClassificacio.txt','wt');
 
-    for (i=1:length(base))
-        TfIdf = TFIDF(tTags, base(i).tag);
+    for (i=1:length(fotosClassificar))
+        TfIdf = TFIDF(tTags, fotosClassificar(i).tag);
         [Classe,ID_Classe]= Classificador (TfIdf,tTags);
-%         if(base(i).idClass==ID_Classe)
-%             Encerts=Encerts+1;
-%         end
-        fprintf(fid,base(i).id);
+%          if(fotosClassificar(i).idClass==ID_Classe)
+%              Encerts=Encerts+1;
+%          end
+    sortidaClassificador(i).id = fotosClassificar(i).id;
+    sortidaClassificador(i).classeAssignada = Classe;
+        fprintf(fid,fotosClassificar(i).id);
         fprintf(fid,' ');
         fprintf(fid,Classe);
         fprintf(fid,'\n');
