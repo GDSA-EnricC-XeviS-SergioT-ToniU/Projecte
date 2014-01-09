@@ -12,5 +12,4 @@ for i=1:length(basededades)
         basededades(i).tag{1,i} = regexprep(basededades(i).title,'[^a-zA-Z0-9]',' ');      
         basededades(i).tag{1,i}(~ismember(basededades(i).tag{1,i},['A':'Z' 'a':'z' ' '])) = ' ';  
         basededades(1,i).tag = lower(strsplit(basededades(i).tag{1,i},{' '}));
-        
-end
+ end
