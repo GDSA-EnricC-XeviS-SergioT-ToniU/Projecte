@@ -7,15 +7,15 @@
 
 fid=fopen('dadesClassificacio.txt','w');
 
-    for (i=1:length(fotosClasificar))
+    for (i=1:length(fotosClassificar))
         
-        TfIdf = TFIDF(tTags, fotosClasificar(i).tag);
+        TfIdf = TFIDF(tTags, fotosClassificar(i).tag);
         [Classe] = Classificador(TfIdf);
         
-        fprintf(fid,fotosClasificar(i).id);
+        fprintf(fid,fotosClassificar(i).id);
         fprintf(fid,' ');
         fprintf(fid,Classe);
-        if i ~= (length(fotosClasificar))
+        if i ~= (length(fotosClassificar))
         fprintf(fid,'\n');
         end
    
