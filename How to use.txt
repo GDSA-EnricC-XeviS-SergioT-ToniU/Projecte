@@ -8,14 +8,9 @@
 Instrucciones de uso
 
 Primero ejecutamos el script project_main.m con Matlab.
-Este script genera.... (ACABAR i MODIFICAR!!)
-
-Primero abrimos el fichero EntrenamentMain.m con Matlab,
-y esto genera la base de datos y los tTags, que son los 
-tags por categoría.
-
-Despu�s abrimos el ClassificarFotosMain.m y este programa
-lo que hace es preguntarte donde tienes la carpeta de los
+Este script genera la base de datos y los tTags, que son los 
+tags por categoría. Además, éste script abre el script
+ClassificarFotosMain.m que nos pregunta donde tienes la carpeta de los
 archivos de entrada y introduce en un fichero de texto la 
 clasificación.
 
@@ -26,7 +21,7 @@ y clasifica las im�genes en los nueve tipos diferentes
 de eventos.
 
 Por lo que respecta a la parte de la evaluación, abrimos
-el script evaluacion.m y al ejecutar el programa nos 
+el script avaluar.m y al ejecutar el programa nos 
 pide que le digamos donde se encuentra el fichero de 
 verdad terreno, que debe estar en .csv, con comas y 
 con una línea de cabecera. 
