@@ -6,11 +6,11 @@
 
 function baseEntrenada=generaBaseDeDades()
 
-        directoriEntrenament=uigetdir(pwd,'Escull la carpeta on es troben les FOTOS que vols ENTRENAR:');
+        directoriEntrenament=uigetdir(pwd,'Escull la carpeta on es troben les fotos:');
         fotos=dir(directoriEntrenament);
         L=length(fotos); 
         
-        directori=uigetdir(pwd,'Escull la carpeta metadatosIDiTITULO');
+        directori=uigetdir(pwd,'Escull la carpeta on están les metadades');
         metadades=dir(directori);
 
         path = strcat(directori,'\',metadades(3).name);
@@ -19,7 +19,7 @@ function baseEntrenada=generaBaseDeDades()
         delimiter = ',';
         [basedades{1:8}] = textread(path, formats,'headerlines', headerLines, 'delimiter', delimiter);
         
-        directori2=uigetdir(pwd,'Escull la carpeta metadatosCLASIFICACION');
+        directori2=uigetdir(pwd,'Escull la carpeta on están les metadades de clasificacio');
         metadades2=dir(directori2);
 
         path2 = strcat(directori2,'\',metadades2(3).name);

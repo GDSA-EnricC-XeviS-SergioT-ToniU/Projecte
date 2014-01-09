@@ -6,11 +6,11 @@
 
 function fotosClasificar = agafaFotos()
 
-        directoriEntrenament=uigetdir(pwd,'Escull la carpeta on es troben les FOTOS que vols classificar:');
+        directoriEntrenament=uigetdir(pwd,'Escull la carpeta on es troben les fotos que vols classificar:');
         fotos=dir(directoriEntrenament);
         L=length(fotos); 
 
-        directori=uigetdir(pwd,'Escull la carpeta on són les METADADES ID I TITOL');
+        directori=uigetdir(pwd,'Escull la carpeta on están les metadades de les fotos que vols classificar:');
         metadades=dir(directori);
 
         path = strcat(directori,'\',metadades(3).name);
@@ -21,12 +21,12 @@ function fotosClasificar = agafaFotos()
 
         for i=3:L         
               x = strcat(fotos(i).name);
-              x=x(1:length(x)-4); % Treiem el .jpg
+              x=x(1:length(x)-4);
                  for j= 1:(length(basedades{1,1})-3)
                      if(strcmp(x, basedades{1,1}{j,1}(3:length(basedades{1,1}{j,1})-1)))
-                           base(i).id=x;
+                           base(i).id=basedades{1,1}{j,1}(3:length(basedades{1,1}{j,1})-1);
                            base(i).title= basedades{1,6}{j,1}(2:length(basedades{1,6}{j,1})-1);
-                           break;
+                            break;
                      end
                  end
         end

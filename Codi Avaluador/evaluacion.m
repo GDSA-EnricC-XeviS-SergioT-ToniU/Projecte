@@ -7,7 +7,7 @@
 
 %IMPORTEM LES DADES DE VERITAT TERRENY de .csv a MATLAB:
 
-directori = uigetdir(pwd,'Escull la carpeta on hi ha el fitxer de Veritat Terreny:');
+directori = uigetdir(pwd,'Escull la carpeta on hi ha el fitxer de Veritat Terreny amb delimitador ",":');
 veritat_terreny_dir = dir(directori);
 
 %path_avaluador = './veritatterreny.csv';
@@ -19,16 +19,16 @@ delimiter = ',';
 
 %IMPORTEM LES DADES DEL CLASSIFICADOR de .csv a MATLAB:
 
-directori = uigetdir(pwd,'Escull la carpeta on hi ha el fitxer dels resultats del Classificador:');
+directori = uigetdir(pwd,'Escull la carpeta on hi ha el fitxer dels resultats del Classificador amb delimitador " ":');
 classificador_dir = dir(directori);
 
 path_avaluador = strcat(directori, '/', classificador_dir(3).name);
 formats = '%s%s'; %Format de les dades en cada columna
-headerLines = 0; %ATENCIÓ-Tenim una primera fila amb la capcelera: document_id, event_types.
+headerLines = 0; %Tenim una primera fila amb la capcelera: document_id, event_types.
 delimiter = ' ';
 [Classificador{1:2}] = textread(path_avaluador, formats,'headerlines', headerLines, 'delimiter', delimiter);
 
-tic;
+
 %PASSEM LES DUES COLUMNES AMB DOS VECTORS ID I EVENT
 
 vector_ver_id = [VeritatTerreny{1}];
@@ -39,24 +39,24 @@ vector_clas_id = [Classificador{1}];
 vector_clas_event = [Classificador{2}];
 length_clas = length(vector_clas_event);
 
-%% Passem vector_ver de ids i event a un map
-
-map_veritat_total = containers.Map();
-
-for i=1:length_veritat
-    map_veritat_total(vector_ver_id{i}) = vector_ver_event{i};
-end
-
-
-%% Canviar el vector de veritat terreny ordenant-lo i fent-lo del tamany del vector del classificador -> MAP.
+%% Canviar el vector de veritat terreny ordenant-lo i fent-lo del tamany del vector del classificador.
 
 for i=1:length_clas
-    id = vector_clas_id{i};
+    id = vector_clas_id(i); %%Agafem cada id.
     
-    if(isKey(map_veritat_total, id) == 1) %Si l'id existeix a la veritat terreny l'agafem, sinó no fem res
-        v_veritat_event{i} = map_veritat_total(id);
-        v_veritat_id{i} = id;
-    end    
+    %El busquem al vector de veritat terreny recorrent-lo
+    for j=1:length_veritat
+        if strcmp(id, vector_ver_id(j)) %Si trobem l'id al vector de veritat terreny, agafem el seu id i l'event.
+            id_trobat = vector_ver_id(j);
+            event_trobat = vector_ver_event(j);
+            break;
+        end
+    end
+    %Fem un nou vector de veritat terreny del tamany del vector del
+    %classificador i ordenat de la mateixa manera.
+    v_veritat_id(i) = id_trobat;
+    v_veritat_event(i) = event_trobat;
+    
 end
 
 v_veritat_id = v_veritat_id'; %Fem la transposada
@@ -118,129 +118,134 @@ end
 
 clas = clas';
 
-%% CALCULEM QUANTES CLASSES HI HA A LA VERITAT TERRENY QUE TAMBÉ SON A LA PREDICCIÓ DEL CLASSIFICADOR
-
-classes_totals = 9;
-
-contador_events = 0;
-
-for a=1:classes_totals
-    for i=1:length(veritat)
-        if veritat(i)==a
-            contador_events = contador_events + 1;
-            break; %Un cop hem trobat l'event, sortim del for per mirar el següent event si existeix en el vector veritat.
-        end
-    end
-end
-
 %% --------- CALCULEM AMB LA FUNCIÓ getcm.m ELS PARÀMETRES D'AVALUACIÓ --------------------
 
 [matriu_confusio,numcorrectes,precisio,record,fscore] = getcm (veritat,clas,1:9);
 
-
 %% ---------- CALCULEM LA MITJANA DE LA PRECISIÓ, RECORD I F-SCORE -----------------
 
-%Càlcul mitjana F1-Score:
 
-avg_fscore = sum(fscore)/contador_events;
+%Comprovació de que Precisió, Record i F-Score de la mateixa clase no
+%siguin 0.
 
-%Càlcul mitjana Precisió:
+%Creem un nou vector de precisió, record i fscore sense els valors que
+%valen 0 en les 3 mesures ja que significa que no apareixen aquelles
+%classes ni en la veritat terreny ni en els resultats del classificador.
 
-avg_precisio = sum(precisio)/contador_events;
+j=1;
+for i=1:9
+    valor1 = precisio(i);
+    valor2 = record(i);
+    valor3 = fscore(i);
+    if valor1~=0 && valor2~=0 && valor3~=0
+        prec(j) = valor1;
+        rec(j) = valor2;
+        fsc(j) = valor3;
+       
+        j=j+1;
+    end
+end
 
-%Càlcul mitjana Record:
-
-avg_record = sum(record)/contador_events;
-
-%% Concatenem els vectors de precisio, record i fscore de cada event en una matriu anomenada: precisio_record_fscore
+%Per fer les mitjanes utilitzem la funció mean
+avg_precisio = mean(prec);
+avg_record = mean(rec);
+avg_fscore = mean(fsc);
 
 precisio_record_fscore = [precisio; record; fscore];
 precisio_record_fscore = precisio_record_fscore';
 
-%% Concatenem les mitjanes de cada mesura al vector: precisio_record_fscore
-
 avg_measures = [avg_precisio avg_record avg_fscore];
 
-%% Càlcul de l'exactitud:
-
-exactitud = (numcorrectes/length_clas)*100;
-
-%% Obtenció dels valors correctes, erronis i totals
-
-valors_correctes = numcorrectes;
 valors_erronis = length_clas - numcorrectes;
-valors_totals = length_clas;
+valors_totals = [numcorrectes length_clas valors_erronis];
 
-erronis_xcent = (valors_erronis/length_clas)*100;
+correctes_xcent = (numcorrectes/length_clas)*100;
+erronis_xcent = ((length_clas - numcorrectes)/length_clas)*100;
 
-ordre_events = {'concert','conference','exhibition','fashion','non_event','other','protest','sports','theater_dance'};
-ordre_events = ordre_events';
+valors_xcent = [correctes_xcent erronis_xcent];
 
-%% Exportem a un fitxer .txt els resultats complets de l'avaluació
+%% Exportem a un fitxer .txt els resultats de l'avaluació
 
-nom = strcat('./ResultatsComplets', '/','Resultats-',classificador_dir(3).name);
-fid = fopen(nom,'wt');
+fid = fopen('Resultats_Avaluacio.txt','wt');
 
-fprintf(fid, '\nPrecisió:\n');
+fprintf(fid, 'MATRIU DE CONFUSIÓ');
+fprintf(fid, '\n\n\');
+fprintf(fid, '                                                                     Predicció\n');
+fprintf(fid, '                                concert conference exhibition fashion non_event other protest sports theater_dance');
+fprintf(fid, '\n');
+
+vector_strings = {'concert' 'conference' 'exhibition' 'fashion' 'non_event' 'other' 'protest' 'sports' 'theater_dance'};
+
 for i=1:9
-    fprintf(fid, '\t');
+    if i==5
+        fprintf(fid, 'Veritat Terreny   ');
+    end
+    if i~=5
+        fprintf(fid, '                  ');
+    end
+    fprintf(fid, vector_strings{i});
+    if i~=9
+        fprintf(fid, '        ');
+    end
+    if i==9
+        fprintf(fid, '  ');
+    end
+    
+    for j=1:9
+        fprintf(fid, num2str(matriu_confusio(i,j)));
+        fprintf(fid, '        ');
+        if j==9
+            fprintf(fid, '\n');
+        end
+    end
+end
+
+fprintf(fid,'\n\n\n'); %Fem un canvi de linia
+
+fprintf(fid,'MESURES AVALUACIÓ:');
+fprintf(fid,'\n\n');
+
+fprintf(fid, '                   Precisió           Record           F-Score \n');
+for i=1:9
+    fprintf(fid, vector_strings{i});
+    fprintf(fid, '\t\t\t\t');
     fprintf(fid, num2str(precisio(i)));
-    fprintf(fid, '\n');
-end
-
-fprintf(fid, '\nRecord:\n');
-for i=1:9
-    fprintf(fid, '\t');
+    fprintf(fid, '\t\t\t\t');
     fprintf(fid, num2str(record(i)));
-    fprintf(fid, '\n');
-end
-
-fprintf(fid, '\nFscore:\n');
-for i=1:9
-    fprintf(fid, '\t');
+    fprintf(fid, '\t\t\t\t');
     fprintf(fid, num2str(fscore(i)));
     fprintf(fid, '\n');
 end
 
-fprintf(fid, '\nAVG Precisió: ');
-fprintf(fid, num2str(avg_precisio));
 fprintf(fid, '\n\n');
 
-fprintf(fid, '\nAVG Record: ');
+fprintf(fid,'AVG Precisió: ');
 fprintf(fid, num2str(avg_precisio));
-fprintf(fid, '\n\n');
-
-fprintf(fid,'\nAVG F-Score: ');
+fprintf(fid, '\n');
+fprintf(fid,'AVG Record: ');
+fprintf(fid, num2str(avg_record));
+fprintf(fid, '\n');
+fprintf(fid,'AVG F-Score: ');
 fprintf(fid, num2str(avg_fscore));
 fprintf(fid, '\n\n');
 
-fprintf(fid,'Exactitud: ');
-fprintf(fid, num2str(exactitud));
-fprintf(fid, '\n\n');
+fprintf(fid,'Encerts: ');
+fprintf(fid, num2str(numcorrectes));
+fprintf(fid, ' (');
+fprintf(fid, num2str(correctes_xcent));
+fprintf(fid, ')');
+fprintf(fid, '\n');
 
-fprintf(fid,'Nombre devents correctes: ');
-fprintf(fid, num2str(valors_correctes));
-fprintf(fid, '\n\n');
-
-fprintf(fid,'Nombre devents erronis: ');
+fprintf(fid,'Erronis: ');
 fprintf(fid, num2str(valors_erronis));
-fprintf(fid, '\n\n');
+fprintf(fid, ' (');
+fprintf(fid, num2str(erronis_xcent));
+fprintf(fid, ')');
+fprintf(fid, '\n');
 
-fprintf(fid, 'Nombre de imatges classificades: ');
+fprintf(fid,'Totals: ');
 fprintf(fid, num2str(length_clas));
-fprintf(fid, '\n\n');
-
 
 fclose(fid);
 
-%% Exportem a un fitxer .txt amb l'exactitud i la mitjana de l'Fscore
 
-nom_exactitud_fscore = strcat('./ResultatsExactitudFscore', '/','ExactitudFscore-',classificador_dir(3).name);
-file_exfs = fopen(nom_exactitud_fscore,'wt');
-
-fprintf(file_exfs, num2str(exactitud));
-fprintf(file_exfs, num2str('\n'));
-fprintf(file_exfs, num2str(avg_fscore));
-
-fclose(file_exfs);
-toc;
