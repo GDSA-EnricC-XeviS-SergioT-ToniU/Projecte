@@ -1,5 +1,5 @@
     
-    Copyright 2013 Antonio Jesús Urbano Torres
+    Copyright 2013 Antonio JesÃºs Urbano Torres
     Email: ajurbano1@gmail.com
 
     This file is part of SocialDetector.
